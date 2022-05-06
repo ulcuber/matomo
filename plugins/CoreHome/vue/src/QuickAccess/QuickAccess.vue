@@ -99,7 +99,7 @@
 import { DeepReadonly, defineComponent } from 'vue';
 import FocusAnywhereButHere from '../FocusAnywhereButHere/FocusAnywhereButHere';
 import FocusIf from '../FocusIf/FocusIf';
-import translate from '../translate';
+import { translate } from '../translate';
 import SitesStore from '../SiteSelector/SitesStore';
 import Site from '../SiteSelector/Site';
 import Matomo from '../Matomo/Matomo';
@@ -443,7 +443,7 @@ export default defineComponent({
 
         if (category && category.lastIndexOf('\n') !== -1) {
           // remove "\n\nMenu"
-          category = category.substr(0, category.lastIndexOf('\n')).trim();
+          category = category.slice(0, category.lastIndexOf('\n')).trim();
         }
 
         window.$(element).find('li .item').each((i, subElement) => {

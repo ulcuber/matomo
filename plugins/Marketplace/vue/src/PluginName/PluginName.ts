@@ -13,8 +13,8 @@ window.broadcast.addPopoverHandler('browsePluginDetail', (value) => {
   let activeTab = null;
 
   if (value.indexOf('!') !== -1) {
-    activeTab = value.substr(value.indexOf('!') + 1);
-    pluginName = value.substr(0, value.indexOf('!'));
+    activeTab = value.slice(value.indexOf('!') + 1);
+    pluginName = value.slice(0, value.indexOf('!'));
   }
 
   let url = `module=Marketplace&action=pluginDetails&pluginName=${encodeURIComponent(pluginName)}`;
@@ -60,7 +60,9 @@ export default {
     }
 
     binding.value.onClickHandler = onClickPluginNameLink.bind(null, binding);
-    $(element).on('click', binding.value.onClickHandler!);
+    $(element).on('click', binding.value.onClickHandler!)
+      // attribute added for AnonymousPiwikUsageMeasurement
+      .attr('matomo-plugin-name', pluginName);
   },
   unmounted(element: HTMLElement, binding: DirectiveBinding<PluginNameDirectiveValue>): void {
     $(element).off('click', binding.value.onClickHandler!);
