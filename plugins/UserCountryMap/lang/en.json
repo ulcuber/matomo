@@ -8,7 +8,7 @@
         "HoursAgo": "%s hours ago",
         "MinutesAgo": "%s minutes ago",
         "NoVisit": "No visit",
-        "NoVisitsInfo": "There are no visits displayed currently, because no visit for this period has the correct geolocation information (latitude & longitude).",
+        "NoVisitsInfo": "There are no visits displayed currently, because no visit for this period has the correct geolocation information (latitude &amp; longitude).",
         "NoVisitsInfo2": "To resolve this issue, make sure you are using a GeoIP geolocation provider with a GeoIP city database. If this does not resolve your issue, then it is possible (though unlikely) that your visits have IP addresses that just cannot be geolocated.",
         "None": "None",
         "PluginDescription": "This plugin provides the widgets Visitor Map and Real-time Map. Note: Requires the UserCountry plugin enabled.",
