@@ -510,23 +510,40 @@ class Visit implements VisitInterface
         /** @var Action $action */
         $action = $this->request->getMetadata('Actions', 'action');
 
+        $dimensionValues = [];
+
         foreach ($dimensions as $dimension) {
+            $fieldName = $dimension->getColumnName();
             $value = $dimension->$hook($this->request, $visitor, $action);
 
-            if ($value !== false) {
-                $fieldName = $dimension->getColumnName();
+            if ($value === false) {
+                continue;
+            }
+
+            // When initially setting values we directly set the properties
+            // Otherwise we update them all at once after all hooks were triggered, to ensure all dimensions hooks
+            // were invoked with the same value set.
+            if ($valuesToUpdate === null) {
                 $visitor->setVisitorColumn($fieldName, $value);
 
                 if (is_float($value)) {
                     $value = Common::forceDotAsSeparatorForDecimalPoint($value);
                 }
 
-                if ($valuesToUpdate !== null) {
-                    $valuesToUpdate[$fieldName] = $value;
-                } else {
-                    $this->visitProperties->setProperty($fieldName, $value);
-                }
+                $this->visitProperties->setProperty($fieldName, $value);
+            } else {
+                $dimensionValues[$fieldName] = $value;
             }
+        }
+
+        foreach ($dimensionValues as $fieldName => $value) {
+            $visitor->setVisitorColumn($fieldName, $value);
+
+            if (is_float($value)) {
+                $value = Common::forceDotAsSeparatorForDecimalPoint($value);
+            }
+
+            $valuesToUpdate[$fieldName] = $value;
         }
 
         return $valuesToUpdate;
