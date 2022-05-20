@@ -207,13 +207,13 @@ class Visit2Test extends IntegrationTestCase
         $this->assertEquals('existing1', $info['custom_dimension_1']);
         $this->assertEquals('onNew2', $info['custom_dimension_2']);  // on existing visit returns false and should be ignored/ not overwrite on new value
         $this->assertEquals('existing3', $info['custom_dimension_3']);
-        $this->assertEquals('existing3extended', $info['custom_dimension_4']); // accesses a previously set column
+        $this->assertEquals('onNew3extended', $info['custom_dimension_4']); // accesses a previously set column
 
         // make sure visitor gets updated as well
         $this->assertEquals('existing1', $visitor->getVisitorColumn('custom_dimension_1'));
         $this->assertEquals('onNew2', $visitor->getVisitorColumn('custom_dimension_2'));
         $this->assertEquals('existing3', $visitor->getVisitorColumn('custom_dimension_3'));
-        $this->assertEquals('existing3extended', $visitor->getVisitorColumn('custom_dimension_4'));
+        $this->assertEquals('onNew3extended', $visitor->getVisitorColumn('custom_dimension_4'));
     }
 
     public function test_handleExistingVisitWithConversion_shouldTriggerDimensions()
@@ -231,7 +231,7 @@ class Visit2Test extends IntegrationTestCase
         $this->assertEquals('existing1', $info['custom_dimension_1']);
         $this->assertEquals('onNew2', $info['custom_dimension_2']); // on converted visit returns false and should be ignored
         $this->assertEquals('converted3', $info['custom_dimension_3']); // a conversion should overwrite an existing value
-        $this->assertEquals('existing3extended', $info['custom_dimension_4']);
+        $this->assertEquals('onNew3extended', $info['custom_dimension_4']);
 
         $this->assertEquals('converted3', $visitor->getVisitorColumn('custom_dimension_3'));
     }

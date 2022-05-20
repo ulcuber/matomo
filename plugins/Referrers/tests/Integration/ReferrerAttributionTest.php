@@ -180,6 +180,7 @@ class ReferrerAttributionTest extends IntegrationTestCase
                 $initialReferrer['referrerType'] === Common::REFERRER_TYPE_DIRECT_ENTRY
                 || $initialReferrer === $referrerAttributionCookieValuesAfterReturn
             )
+            && $referrerAttributionCookieValuesAfterReturn !== null
             && $referrerAttributionCookieValuesAfterReturn['referrerType'] === Common::REFERRER_TYPE_CAMPAIGN
         ) {
             $visitReferrer = $referrerAttributionCookieValuesAfterReturn;
@@ -221,14 +222,17 @@ class ReferrerAttributionTest extends IntegrationTestCase
         Fixture::checkResponse($tracker->doTrackEcommerceOrder('TestingOrder', 124.5));
 
         // check that conversion is attributed correctly
-        if ($referrerAttributionCookieValuesAfterReturn['referrerType'] === Common::REFERRER_TYPE_CAMPAIGN) {
+        if (
+            $referrerAttributionCookieValuesAfterReturn !== null
+            && $referrerAttributionCookieValuesAfterReturn['referrerType'] === Common::REFERRER_TYPE_CAMPAIGN
+        ) {
             // if campaign was provided through cookie this will always be used
             $conversionReferrer = $referrerAttributionCookieValuesAfterReturn;
         } elseif ($visitReferrer['referrerType'] === Common::REFERRER_TYPE_CAMPAIGN) {
             // if campaign is referrer of current visit use this
             $conversionReferrer = $visitReferrer;
         } elseif (
-            $referrerAttributionCookieValuesAfterReturn
+            $referrerAttributionCookieValuesAfterReturn !== null
             && !(
                 $referrerAttributionCookieValuesAfterReturn === $secondReferrer
                 && $addSecondReferrerAsSiteUrl
