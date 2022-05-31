@@ -496,13 +496,13 @@ abstract class Base extends VisitDimension
         $referrerNameAnalayzed = mb_strtolower($this->nameReferrerAnalyzed);
         $referrerNameAnalayzed = $this->truncateReferrerName($referrerNameAnalayzed);
 
-        $isCurrentVisitACampaignWithSameName = mb_strtolower($visitor->getVisitorColumn('referer_name') ?? '') == $referrerNameAnalayzed;
-        $isCurrentVisitACampaignWithSameName = $isCurrentVisitACampaignWithSameName && $visitor->getVisitorColumn('referer_type') == Common::REFERRER_TYPE_CAMPAIGN;
+        $isCurrentVisitACampaignWithSameName = mb_strtolower($visitor->getPreviousVisitColumn('referer_name') ?? '') == $referrerNameAnalayzed;
+        $isCurrentVisitACampaignWithSameName = $isCurrentVisitACampaignWithSameName && $visitor->getPreviousVisitColumn('referer_type') == Common::REFERRER_TYPE_CAMPAIGN;
 
         // if we detected a campaign but there is still no keyword set, we set the keyword to the Referrer host
         if (empty($this->keywordReferrerAnalyzed)) {
             if ($isCurrentVisitACampaignWithSameName) {
-                $this->keywordReferrerAnalyzed = $visitor->getVisitorColumn('referer_keyword');
+                $this->keywordReferrerAnalyzed = $visitor->getPreviousVisitColumn('referer_keyword');
                 // it is an existing visit and no referrer keyword was used initially (or a different host),
                 // we do not use the default referrer host in this case as it would create a new visit. It would create
                 // a new visit because initially the referrer keyword was not set (or from a different host) and now
@@ -632,7 +632,7 @@ abstract class Base extends VisitDimension
 
     protected function hasReferrerColumnChanged(Visitor $visitor, $information, $infoName)
     {
-        $existing = mb_strtolower($visitor->getVisitorColumn($infoName) ?? '');
+        $existing = mb_strtolower($visitor->getPreviousVisitColumn($infoName) ?? '');
         $new = mb_strtolower($information[$infoName] ?? '');
 
         $result = $existing != $new;
@@ -645,7 +645,7 @@ abstract class Base extends VisitDimension
 
     protected function doesLastActionHaveSameReferrer(Visitor $visitor, $referrerType)
     {
-        return $visitor->getVisitorColumn('referer_type') == $referrerType;
+        return $visitor->getPreviousVisitColumn('referer_type') == $referrerType;
     }
 
     protected function getReferrerCampaignQueryParam(Request $request, $paramName)
@@ -665,7 +665,7 @@ abstract class Base extends VisitDimension
 
     protected function isCurrentReferrerDirectEntry(Visitor $visitor)
     {
-        $referrerType = $visitor->getVisitorColumn('referer_type');
+        $referrerType = $visitor->getPreviousVisitColumn('referer_type');
         return $referrerType == Common::REFERRER_TYPE_DIRECT_ENTRY;
     }
 }
