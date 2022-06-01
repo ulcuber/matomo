@@ -10,17 +10,15 @@
 
 namespace Piwik\Updates;
 
-use Piwik\Common;
-use Piwik\Db;
 use Piwik\Updater;
 use Piwik\Updates as PiwikUpdates;
 use Piwik\Updater\Migration;
 use Piwik\Updater\Migration\Factory as MigrationFactory;
 
 /**
- * Update for version 4.11.0-b1
+ * Update for version 4.11.0-b2
  */
-class Updates_4_11_0_b1 extends PiwikUpdates
+class Updates_4_11_0_b2 extends PiwikUpdates
 {
     /**
      * @var MigrationFactory
